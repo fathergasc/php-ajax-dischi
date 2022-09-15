@@ -12,6 +12,10 @@
     <div id="app">
         <header class="px-3 d-flex justify-content-between align-items-center">
             <img id="spotify-logo" src="../img/logo.svg" alt="">
+            <select v-model="selectedGenre" @change="getAlbums">
+                <option value="">Seleziona genere</option>
+                <option v-for="(genre, index) in genres" :value="genre">{{genre}}</option>
+            </select>
         </header>
 
         <main>

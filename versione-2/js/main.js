@@ -1,23 +1,30 @@
 var app = new Vue({
-    el: '#app',
+    el: "#app",
     data: {
-      albumList: [],
-      endpoint: 'http://localhost/php-ajax-dischi/versione-2/api/api.php'
+        albumList: [],
+        genres: [],
+        selectedGenre:'',
+        endpoint: "http://localhost/php-ajax-dischi/versione-2/api/api.php?genre=",
     },
     methods: {
-
+        getAlbums() {
+            axios
+                .get(this.endpoint + this.selectedGenre)
+                .then((response) => {
+                    this.albumList = response.data;
+                    console.log("response.data: ", response);
+                    if (this.genres.length == 0) {
+                        this.albumList.forEach((album) => {
+                            if (!this.genres.includes(album.genre)) {
+                                this.genres.push(album.genre);
+                            }
+                        });
+                    }
+                })
+                .catch((error) => console.log(error));
+        },
     },
     created() {
-        let that = this;
-
-        axios.get(this.endpoint)
-        .then((response) => {
-            that.albumList = response.data;
-            console.log('response.data: ', response);
-            ;
-        })
-        .catch((error) =>
-            console.log(error)
-        )
-    }
-  })
+        this.getAlbums();
+    },
+});
